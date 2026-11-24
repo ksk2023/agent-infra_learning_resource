@@ -1,93 +1,31 @@
-# AI-Infra-Guide
+# AI Learning Resources
 
-> 从张量计算到训练集群与推理服务：一套中文、项目驱动的 AI Infra 系统学习教程。
+面向 AI 系统工程方向的系统化学习资料合集。不同方向放在独立子目录中，分别维护教程、实验、项目和参考资源。
 
-本教程参考 Datawhale 开源教程的组织方式，将**正文、实验、项目、自测和资料导航**放在一条学习主线上。它是独立整理的学习资料，不是 Datawhale 官方项目，也不复制其课程内容。
+## 内容导航
 
-## 项目简介
+| 方向 | 目录 | 内容 |
+|---|---|---|
+| AI Infra | [ai-infra](ai-infra/README.md) | GPU、分布式训练、推理引擎、云原生、MLOps 与 RL Infra |
+| Agent | `agent/`（待添加） | Agent 方向学习资料与实践 |
 
-AI Infra 不是某个框架的名字，而是让模型能够被**开发、训练、部署、观测和持续演进**的一整套软硬件系统。本教程以大模型为主要对象，同时保留通用的机器学习系统基础。
-
-GitHub 上相关仓库数量庞大且持续变化，任何人都无法静态穷尽“所有资料”。本项目采用“**系统课程 + 精选资源图谱 + 源码阅读任务**”的方式，优先收录官方仓库、经典课程、代表性实现和活跃生态；不推荐以 Star 数作为唯一标准。
-
-## 你将学到什么
-
-- 用计算图、自动微分和张量布局理解深度学习框架。
-- 用 Roofline、显存模型和 profiler 分析性能，而不是盲目换框架。
-- 理解 DDP、FSDP/ZeRO、TP、PP、EP 及集合通信的取舍。
-- 推导 KV Cache 开销，理解 continuous batching、PagedAttention、prefix caching 和 speculative decoding。
-- 部署具备评测、监控、SLO、容错和成本意识的训练与推理系统。
-- 读懂 vLLM、SGLang、Megatron-LM 等真实项目，并完成一次高质量开源贡献。
-
-## 适合谁
-
-适合会基本 Python、了解神经网络与 Transformer 的学生、算法工程师、后端工程师和系统工程师。完全零基础读者先完成[第 00 章](docs/00-如何使用本教程.md)中的前置补给，不必先学完所有数学和 CUDA。
-
-## 快速开始
-
-1. 阅读[学习路线](ROADMAP.md)，选择标准、冲刺或研究方向路线。
-2. 按顺序阅读 `docs/`；每章先完成“最低实践”，再做扩展任务。
-3. 无 GPU 时先运行本仓库的 CPU 小实验：
+## AI Infra 快速开始
 
 ```bash
-python code/ch03/roofline.py
-python code/ch05/memory_estimator.py
-python code/ch06/ring_allreduce.py
-python code/ch09/inference_metrics.py
-python code/ch10/batching_simulator.py
+cd ai-infra
+```
+
+然后阅读：
+
+- [教程首页](ai-infra/README.md)
+- [16 周学习路线](ai-infra/ROADMAP.md)
+- [GitHub 开源资源图谱](ai-infra/resources/README.md)
+- [阶段项目](ai-infra/projects/README.md)
+
+AI Infra 的 CPU 最小实验与文档检查也在其子目录中运行：
+
+```bash
+cd ai-infra
 python -m unittest discover -s tests -v
+python scripts/validate.py
 ```
-
-4. 有 GPU 后，再完成各章标注为“GPU 实践”的任务。不同框架的 CUDA、驱动和依赖要求不同，请以对应官方文档为准，不要把所有框架装进同一个环境。
-5. 用 `templates/` 中的模板记录笔记、实验和源码阅读，最后完成 `projects/` 中的阶段项目。
-
-## 章节导航
-
-| 章节 | 核心问题 | 主要产出 |
-|---|---|---|
-| [00 如何使用本教程](docs/00-如何使用本教程.md) | 如何按基础与硬件条件学习？ | 个人学习计划 |
-| [01 AI Infra 全景](docs/01-AI-Infra全景.md) | 模型之外，系统由什么组成？ | 一张全栈架构图 |
-| [02 框架与 LLM 计算](docs/02-框架与LLM计算.md) | 从模型代码到底层执行发生了什么？ | 算子与显存清单 |
-| [03 GPU 与 Roofline](docs/03-GPU与Roofline.md) | 为什么算得快的芯片仍会慢？ | Roofline 分析 |
-| [04 CUDA、Triton 与编译](docs/04-CUDA-Triton与AI编译.md) | 如何写一个正确且可测的算子？ | Kernel 优化报告 |
-| [05 单机训练优化](docs/05-单机训练优化.md) | 显存和时间究竟花在哪里？ | 显存预算与 profile |
-| [06 分布式训练与通信](docs/06-分布式训练与通信.md) | 多卡为什么不一定更快？ | 集通信与扩展性实验 |
-| [07 大模型并行训练](docs/07-大模型并行训练.md) | DDP、FSDP、TP、PP、EP 怎么选？ | 并行方案设计 |
-| [08 数据、Checkpoint 与容错](docs/08-数据-Checkpoint与容错.md) | 长任务如何可复现、可恢复？ | 故障恢复方案 |
-| [09 LLM 推理基础](docs/09-LLM推理基础.md) | Prefill/decode、KV Cache 和指标有何关系？ | 推理容量估算 |
-| [10 推理引擎核心](docs/10-推理引擎核心.md) | 调度、分页缓存与推测解码如何工作？ | 调度模拟与 benchmark |
-| [11 模型压缩与多端推理](docs/11-模型压缩与多端推理.md) | 量化为什么不仅是“位数减半”？ | 精度—性能对照实验 |
-| [12 Serving 与云原生](docs/12-Serving与云原生.md) | 如何从单进程扩展到可靠服务？ | 服务与伸缩设计 |
-| [13 MLOps、评测与可观测性](docs/13-MLOps-评测与可观测性.md) | 怎样让系统可复现、可诊断、可运营？ | SLO 与监控方案 |
-| [14 RL 后训练系统](docs/14-RL后训练系统.md) | Rollout、训练与权重同步为何困难？ | RL 系统时序图 |
-| [15 综合项目与开源贡献](docs/15-综合项目与开源贡献.md) | 如何把知识变成作品与 PR？ | 完整项目报告 |
-
-## 学习闭环
-
-```text
-概念 -> 最小实现 -> 测量 -> 解释权衡 -> 阅读真实源码 -> 复盘
-```
-
-每章只有同时做到以下三点，才算完成：
-
-- **能解释**：不用框架黑话，说清它解决什么瓶颈、何时无效。
-- **能验证**：给出脚本、配置、原始数据、对照组和限制。
-- **能迁移**：面对新模型或新硬件，能重新估算并设计实验。
-
-## 仓库结构
-
-```text
-docs/        分章教程
-resources/   GitHub 课程、训练、推理、GPU、平台资源图谱
-code/        无 GPU 可运行的最小实验
-projects/    四个递进式阶段项目
-templates/   学习笔记、实验报告、源码阅读与周计划模板
-tests/       最小实验的单元测试
-```
-
-## 重要说明
-
-- 资源链接指向各自上游项目；许可证、模型权重、数据集与代码的授权可能不同，使用前必须分别检查。
-- 教程中的公式用于建立估算能力；真实性能还受 kernel、通信、显存碎片、框架开销和输入分布影响。
-- 性能结论必须绑定硬件、软件版本、模型、输入长度和并发条件。不要把其他机器的 benchmark 数字直接当作自己的结论。
-- 若上游仓库迁移，以项目官方公告为准。资源总表见[GitHub 开源资源图谱](resources/README.md)。
