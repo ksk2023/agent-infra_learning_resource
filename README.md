@@ -7,7 +7,7 @@
 | 方向 | 目录 | 内容 |
 |---|---|---|
 | AI Infra | [ai-infra](ai-infra/README.md) | GPU、分布式训练、推理引擎、云原生、MLOps 与 RL Infra |
-| Agent | `agent/`（待添加） | Agent 方向学习资料与实践 |
+| Agent | [agent](agent/README.md) | Agent Loop、工具、RAG、Runtime、多 Agent、评测与安全 |
 
 ## AI Infra 快速开始
 
